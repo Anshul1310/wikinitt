@@ -1,0 +1,341 @@
+/* --- Global Layout --- */
+.container {
+  min-height: 100vh;
+  background-color: #f9fafb;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* --- Navigation Bar --- */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #e5e7eb;
+  z-index: 1000;
+  padding: 0 20px;
+}
+
+.navContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 64px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #1e3a8a; /* Dark Blue */
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.logo span {
+  color: #f59e0b; /* Yellow */
+}
+
+.navLinks {
+  display: flex;
+  gap: 30px;
+}
+
+.navLink {
+  text-decoration: none;
+  color: #4b5563;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.navLink:hover {
+  color: #1e3a8a;
+}
+
+/* --- Search Bar --- */
+.searchContainer {
+  position: relative;
+  width: 250px;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 8px 16px 8px 35px;
+  border: 1px solid #d1d5db;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.searchInput:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.searchIcon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  width: 16px;
+  height: 16px;
+}
+
+/* --- Hero Section (Carousel) --- */
+.hero {
+  position: relative;
+  height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* Important to keep zooming images inside the box */
+  margin-bottom: 3rem;
+  background-color: #111827;
+}
+
+/* The dark gradient overlay */
+.heroOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Gradient: Transparent at top -> Darker at bottom */
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.6) 50%,
+    rgba(0, 0, 0, 0.9) 100%
+  );
+  z-index: 10; /* Sits above images, below text */
+}
+
+/* Individual Images */
+.carouselImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
+  z-index: 1;
+}
+
+/* Active Image State */
+.carouselImageActive {
+  opacity: 1;
+  transform: scale(1.05); /* Slow zoom effect */
+  transition: opacity 1.5s ease-in-out, transform 6s linear;
+}
+
+/* Hero Text Content */
+.heroContent {
+  position: relative;
+  z-index: 20; /* Sits on top of everything */
+  max-width: 800px;
+  padding: 0 20px;
+  text-align: center;
+  color: white;
+}
+
+.heroTitle {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.heroTitle span {
+  color: #facc15;
+}
+
+.heroSubtitle {
+  font-size: 1.25rem;
+  color: #e5e7eb;
+  margin-bottom: 2.5rem;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+.heroButtons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.btnPrimary {
+  padding: 12px 32px;
+  background-color: #2563eb;
+  color: white;
+  border-radius: 8px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.btnPrimary:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.btnSecondary {
+  padding: 12px 32px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  border-radius: 8px;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(4px);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btnSecondary:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* --- Main Content Section --- */
+.mainContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px 80px 20px;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 30px;
+}
+
+.sectionTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  color: #111827;
+}
+
+.sectionDesc {
+  color: #6b7280;
+  margin: 8px 0 0 0;
+}
+
+.viewAll {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.viewAll:hover {
+  text-decoration: underline;
+}
+
+/* --- Card Grid --- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #f3f4f6;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.cardImage {
+  height: 200px;
+  background: linear-gradient(135deg, #1e3a8a, #111827);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cardPlaceholder {
+  font-size: 4rem;
+  font-weight: bold;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.cardContent {
+  padding: 24px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.cardCategory {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #2563eb;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.cardTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  color: #111827;
+}
+
+.cardExcerpt {
+  color: #4b5563;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.readMore {
+  margin-top: auto; /* Pushes the link to the bottom of the card */
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #111827;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.readMore:hover {
+  color: #2563eb;
+}
+
+/* --- Footer --- */
+.footer {
+  background-color: #111827;
+  color: white;
+  padding: 40px 20px;
+  text-align: center;
+  margin-top: auto;
+}
+
+.footerText {
+  color: #9ca3af;
+  font-size: 0.9rem;
+}
