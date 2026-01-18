@@ -37,41 +37,50 @@ export default function AddArticlePage() {
     try {
       let imageUrl = '';
 
-      // --- STEP A: Upload to Cloudinary ---
+      // --- STEP A: Upload to Cloudinary (Optional, keep if you have it configured) ---
       if (imageFile) {
         setStatusMessage('Uploading Image to Cloud...');
         
+        // Note: Make sure you replace these placeholders with your actual Cloudinary details
+        // or comment this block out if you aren't using image upload yet.
         const data = new FormData();
         data.append('file', imageFile);
-        data.append('upload_preset', 'YOUR_UPLOAD_PRESET'); // <--- REPLACE THIS
-        data.append('cloud_name', 'YOUR_CLOUD_NAME');       // <--- REPLACE THIS
+        data.append('upload_preset', 'YOUR_UPLOAD_PRESET'); 
+        data.append('cloud_name', 'YOUR_CLOUD_NAME');       
 
+        // Uncomment the fetch below when you are ready to upload images
+        /*
         const res = await fetch('https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/image/upload', {
           method: 'POST',
           body: data
         });
-
         const file = await res.json();
-        
         if (!res.ok) throw new Error('Image upload failed');
         imageUrl = file.secure_url;
+        */
       }
 
-      // --- STEP B: Submit Article Data ---
+      // --- STEP B: Submit Article Data to MongoDB ---
       setStatusMessage('Saving Article Data...');
 
-      // Combine form data with the new image URL
       const finalArticleData = {
         ...formData,
-        image: imageUrl,
-        date: new Date().toISOString()
+        image: imageUrl, // Will be empty string if upload logic is commented out
       };
 
-      // Call your Next.js API (Simulated here)
-      // await fetch('/api/articles', { method: 'POST', body: JSON.stringify(finalArticleData) });
-      
-      // Simulating a delay for demo purposes so you can see the dialog
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      const response = await fetch('/api/articles', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(finalArticleData),
+      });
+
+      const result = await response.json();
+
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to save article');
+      }
 
       alert('Article Published Successfully!');
       
@@ -132,6 +141,10 @@ export default function AddArticlePage() {
               <option value="Design">Design</option>
               <option value="Lifestyle">Lifestyle</option>
               <option value="Business">Business</option>
+              <option value="Productivity">Productivity</option>
+              <option value="Events">Events</option>
+              <option value="Hostels">Hostels</option>
+              <option value="Academics">Academics</option>
             </select>
           </div>
 
@@ -140,7 +153,6 @@ export default function AddArticlePage() {
             <input 
               type="file" 
               accept="image/*"
-              required
               className={`${styles.input} ${styles.fileInput}`}
               onChange={handleFileChange}
             />
