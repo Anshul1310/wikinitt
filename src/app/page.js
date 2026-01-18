@@ -66,9 +66,8 @@ export default function Home() {
     <div className={styles.container}>
       
       {/* 4. Pass handleSearch to Navbar */}
-      <div onClick={handleSearch}>
 <Navbar   />
-      </div>
+   
       
 
       {/* Hero Section */}

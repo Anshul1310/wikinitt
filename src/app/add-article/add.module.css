@@ -135,3 +135,51 @@
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+/* Add this to the bottom of src/app/add-article/add.module.css */
+
+.suggestionsList {
+  position: absolute;
+  top: 80px; /* Adjust based on where your label ends */
+  left: 10px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 50;
+}
+
+.suggestionItem {
+  padding: 10px 16px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f1f5f9;
+  transition: background-color 0.2s;
+}
+
+.suggestionItem:last-child {
+  border-bottom: none;
+}
+
+.suggestionItem:hover {
+  background-color: #f8fafc;
+}
+
+.suggestionTitle {
+  font-weight: 600;
+  color: #1e293b;
+  font-size: 14px;
+}
+
+.suggestionCategory {
+  font-size: 11px;
+  color: #64748b;
+  background: #f1f5f9;
+  padding: 2px 8px;
+  border-radius: 12px;
+}

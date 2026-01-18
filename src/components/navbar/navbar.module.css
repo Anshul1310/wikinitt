@@ -68,6 +68,7 @@
   background: #f9fafb;
   outline: none;
   font-size: 0.9rem;
+  color: #111827;
   transition: all 0.2s;
 }
 
@@ -117,3 +118,4 @@
     background: none; border: none; font-size: 1.2rem;
   }
 }
+

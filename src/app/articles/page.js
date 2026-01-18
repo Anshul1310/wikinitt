@@ -6,13 +6,13 @@ import { useSearchParams } from "next/navigation";
 import Navbar from "@/components/navbar/Navbar"; 
 import styles from "./articles.module.css";
 
-// --- Static Data for Slides (Optional: You could also fetch this from DB) ---
+// --- Static Data for Slides ---
 const featuredSlides = [
   { id: 101, title: "Top 12 study spots in NITT for 2024", category: "Productivity", image: "https://res.cloudinary.com/dbxtgjwyv/image/upload/v1768746331/16284893_n3s1ub.jpg" },
-  { id: 102, title: "Festember 2025: What to Expect", category: "Events", image: "https://res.cloudinary.com/dbxtgjwyv/image/upload/v1768746331/16284907_xifwe2.jpg" },
+  { id: 102, title: "Festember 2025: What to Expect", category: "Events", image: "https://res.cloudinary.com/dbxtgjwyv/image/upload/v1768746331/16284893_n3s1ub.jpg" },
 ];
 
-const categories = ["All articles", "Technology", "Design", "Lifestyle", "Business", "Productivity", "Events", "Hostels", "Academics", "Guide"];
+const categories = ["All articles", "Department", "Hostel", "StudentLife", "Academics"];
 
 function ArticlesContent() {
   const [activeCategory, setActiveCategory] = useState("All articles");
@@ -37,9 +37,8 @@ function ArticlesContent() {
   useEffect(() => {
     async function fetchArticles() {
       try {
-       // Use the environment variable
-const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
-const res = await fetch(`${apiUrl}/api/articles`);
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+        const res = await fetch(`${apiUrl}/api/articles`);
         const data = await res.json();
         if (data.success) {
           setArticles(data.data);
@@ -104,15 +103,53 @@ const res = await fetch(`${apiUrl}/api/articles`);
                 .filter(a => a.title.toLowerCase().includes(searchQuery.toLowerCase()))
                 .map((article) => (
                 <div key={article._id} className={styles.card}>
+                  
+                  {/* 1. Link the Image explicitly */}
                   <div className={styles.cardImageWrapper}>
-                    {article.image ? <img src={article.image} alt={article.title} style={{width:'100%', height:'100%', objectFit:'cover'}}/> : <span>📄</span>}
+                    <Link href={`/article/${article.slug}`}>
+                        {article.image ? (
+                            <img 
+                                src={article.image} 
+                                alt={article.title} 
+                                style={{width:'100%', height:'100%', objectFit:'cover'}}
+                            />
+                        ) : (
+                             <div style={{width:'100%', height:'100%', display:'flex', alignItems:'center', justifyContent:'center', background:'#f1f5f9', fontSize:'40px'}}>
+                                📄
+                            </div>
+                        )}
+                    </Link>
                   </div>
+
                   <div className={styles.cardContent}>
                     <div className={styles.cardCategory}>{article.category}</div>
-                    <h3 className={styles.cardTitle}>{article.title}</h3>
+                    
+                    {/* 2. Link the Title explicitly */}
+                    <Link href={`/article/${article.slug}`}>
+                        <h3 className={styles.cardTitle}>{article.title}</h3>
+                    </Link>
+                    
                     <div className={styles.cardMeta}>{new Date(article.createdAt).toLocaleDateString()}</div>
+
+                    {/* 3. Description & Read More */}
+                    <div style={{ marginTop: '10px', fontSize: '14px', color: '#64748b', lineHeight: '1.5' }}>
+                        {article.description && article.description.length > 100 
+                            ? article.description.substring(0, 100) + '...'
+                            : article.description
+                        }
+                    </div>
+                    
+                    <Link href={`/article/${article.slug}`} style={{ 
+                        display: 'inline-block', 
+                        marginTop: '12px', 
+                        color: '#2563eb', 
+                        fontWeight: '600', 
+                        fontSize: '14px',
+                        textDecoration: 'none'
+                    }}>
+                        Read More →
+                    </Link>
                   </div>
-                  <Link href={`/article/${article.slug}`} style={{position:'absolute', inset:0}}></Link>
                 </div>
               ))
             )}

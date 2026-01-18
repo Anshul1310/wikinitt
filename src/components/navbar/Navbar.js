@@ -2,14 +2,23 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { useRouter, usePathname } from "next/navigation"; // Import Hooks
+import { useRouter, usePathname } from "next/navigation"; 
 import styles from "./navbar.module.css";
 
 export default function Navbar({ onSearch }) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [inputValue, setInputValue] = useState(""); // Local state for input
+  const [inputValue, setInputValue] = useState(""); 
   const router = useRouter();
   const pathname = usePathname();
+
+  // UPDATED: Handle click on the search wrapper
+  const handleSearchClick = () => {
+    // If user is on Home page, redirect to Articles page immediately
+    if (pathname === '/') {
+      router.push('/articles');
+    }
+    // If on /articles, do nothing (let the input get focus so user can type)
+  };
 
   const handleSearchChange = (e) => {
     const value = e.target.value;
@@ -23,7 +32,7 @@ export default function Navbar({ onSearch }) {
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
-      // If on Homepage (or any other page), Redirect to Articles page
+      // If on any page other than /articles, Redirect with the query
       if (pathname !== '/articles') {
         router.push(`/articles?search=${encodeURIComponent(inputValue)}`);
       }
@@ -41,19 +50,29 @@ export default function Navbar({ onSearch }) {
 
         {/* Desktop Links */}
         <div className={styles.navLinks}>
-          {['Home', 'Departments', 'Hostels', 'Student Life', 'Admin'].map((item) => (
-            <Link 
-              key={item} 
-              href={item === 'Home' ? '/' : `/${item.toLowerCase().replace(' ', '-')}`} 
-              className={styles.navLink}
-            >
-              {item}
-            </Link>
-          ))}
+          {['Home', 'Department', 'Hostel', 'StudentLife', 'Admin'].map((item) => {
+            // Helper to determine href based on item name
+            let href = '/';
+            if (item === 'Admin') href = '/add-article';
+            else if (item === 'Department') href = '/article/nitt-department-locations-map';
+            else if (item === 'StudentLife') href = '/article/nitt-boys-hostels-guide';
+            else if (item === 'Hostel') href = '/articles?category=Hostels'; // Fixed Hostel Link
+            
+            return (
+              <Link 
+                key={item} 
+                href={href} 
+                className={styles.navLink}
+              >
+                {item}
+              </Link>
+            );
+          })}
         </div>
 
         {/* Search Section */}
-        <div className={styles.searchWrapper}>
+        {/* Added onClick handler to the wrapper */}
+        <div onClick={handleSearchClick} className={styles.searchWrapper}>
           <div className={`${styles.searchForm} ${isSearchOpen ? styles.mobileOpen : ''}`}>
             <div className={styles.inputIcon}>
               <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -66,12 +85,15 @@ export default function Navbar({ onSearch }) {
               className={styles.searchInput}
               value={inputValue}
               onChange={handleSearchChange}
-              onKeyDown={handleKeyDown} // Listen for Enter key
+              onKeyDown={handleKeyDown} 
             />
             
             <button 
               className={styles.closeSearchBtn}
-              onClick={() => setIsSearchOpen(false)}
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent wrapper click logic
+                setIsSearchOpen(false);
+              }}
             >
               ✕
             </button>
@@ -79,7 +101,10 @@ export default function Navbar({ onSearch }) {
 
           <button 
             className={styles.mobileSearchTrigger}
-            onClick={() => setIsSearchOpen(true)}
+            onClick={(e) => {
+              e.stopPropagation(); 
+              setIsSearchOpen(true);
+            }}
           >
             <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
