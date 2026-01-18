@@ -1,15 +1,16 @@
 // app/article/[slug]/page.jsx
 import { notFound } from 'next/navigation';
+import Link from 'next/link'; // Import Link
 import styles from './article.module.css';
 
 // Helper to fetch data
 async function getArticle(slug) {
-  // Use environment variable or fallback to localhost for development
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+  // Use environment variable or fallback to localhost:5000 for backend
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
   
   try {
     const res = await fetch(`${apiUrl}/api/articles/${slug}`, {
-      cache: 'no-store' // Fetch fresh data on every request
+      cache: 'no-store' 
     });
     
     if (!res.ok) return null;
@@ -23,7 +24,6 @@ async function getArticle(slug) {
 }
 
 export default async function ArticlePage({ params }) {
-  // In Next.js 15, params is a promise
   const { slug } = await params;
   const article = await getArticle(slug);
 
@@ -47,7 +47,7 @@ export default async function ArticlePage({ params }) {
 
       <div className={styles.mainLayout}>
         
-        {/* Left Sidebar with SVG Icons */}
+        {/* Left Sidebar (Sticky Socials) */}
         <aside className={styles.sidebar}>
           <span className={styles.shareLabel}>Share</span>
           
@@ -64,18 +64,22 @@ export default async function ArticlePage({ params }) {
 
         {/* Main Content */}
         <article className={styles.contentArea}>
+          
+          <Link href="/articles" className={styles.backLink}>
+            ← Back to Articles
+          </Link>
+
           <h1 className={styles.title}>
             {article.title}
           </h1>
 
           <div className={styles.metaData}>
-             Category: <strong>{article.category}</strong> &bull; {new Date(article.createdAt).toLocaleDateString()}
+             <span className={styles.categoryTag}>{article.category}</span>
+             <span>{new Date(article.createdAt).toLocaleDateString()}</span>
           </div>
 
           <div 
             className={styles.bodyText}
-            // Caution: In production, sanitize this HTML (e.g. using DOMPurify) 
-            // to prevent XSS attacks since this content comes from user input.
             dangerouslySetInnerHTML={{ __html: article.content }} 
           />
         </article>

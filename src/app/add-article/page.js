@@ -45,19 +45,20 @@ export default function AddArticlePage() {
         // or comment this block out if you aren't using image upload yet.
         const data = new FormData();
         data.append('file', imageFile);
-        data.append('upload_preset', 'YOUR_UPLOAD_PRESET'); 
-        data.append('cloud_name', 'YOUR_CLOUD_NAME');       
+        data.append('upload_preset', 'android_unsigned'); 
+        data.append('cloud_name', 'dbxtgjwyv');       
 
         // Uncomment the fetch below when you are ready to upload images
-        /*
-        const res = await fetch('https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/image/upload', {
+        
+        const res = await fetch('https://api.cloudinary.com/v1_1/dbxtgjwyv/image/upload', {
           method: 'POST',
           body: data
         });
         const file = await res.json();
+        console.log(file)
         if (!res.ok) throw new Error('Image upload failed');
         imageUrl = file.secure_url;
-        */
+        
       }
 
       // --- STEP B: Submit Article Data to MongoDB ---
@@ -68,8 +69,9 @@ export default function AddArticlePage() {
         image: imageUrl, // Will be empty string if upload logic is commented out
       };
 
-      const response = await fetch('/api/articles', {
-        method: 'POST',
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+const response = await fetch(`${apiUrl}/api/articles`, {
+  method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },

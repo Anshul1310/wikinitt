@@ -8,8 +8,8 @@ import styles from "./articles.module.css";
 
 // --- Static Data for Slides (Optional: You could also fetch this from DB) ---
 const featuredSlides = [
-  { id: 101, title: "Top 12 study spots in NITT for 2024", category: "Productivity", image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1200&q=80" },
-  { id: 102, title: "Festember 2025: What to Expect", category: "Events", image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80" },
+  { id: 101, title: "Top 12 study spots in NITT for 2024", category: "Productivity", image: "https://res.cloudinary.com/dbxtgjwyv/image/upload/v1768746331/16284893_n3s1ub.jpg" },
+  { id: 102, title: "Festember 2025: What to Expect", category: "Events", image: "https://res.cloudinary.com/dbxtgjwyv/image/upload/v1768746331/16284907_xifwe2.jpg" },
 ];
 
 const categories = ["All articles", "Technology", "Design", "Lifestyle", "Business", "Productivity", "Events", "Hostels", "Academics", "Guide"];
@@ -37,7 +37,9 @@ function ArticlesContent() {
   useEffect(() => {
     async function fetchArticles() {
       try {
-        const res = await fetch('/api/articles');
+       // Use the environment variable
+const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+const res = await fetch(`${apiUrl}/api/articles`);
         const data = await res.json();
         if (data.success) {
           setArticles(data.data);
